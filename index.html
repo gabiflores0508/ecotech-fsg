@@ -1980,6 +1980,7 @@
 
             const meuNome = estado.nomeQuiz || 'Você';
             function renderRanking(dados) {
+                console.log('renderRanking chamado com:', dados);
                 const med = ['🥇', '🥈', '🥉'];
                 if (!dados) {
                     const meuPts = estado.conquistas.length * 4 + estado.leituras.length;
