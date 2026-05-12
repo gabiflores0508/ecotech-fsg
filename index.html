@@ -1106,6 +1106,9 @@
             }
         }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 </head>
 
 <body>
@@ -1559,6 +1562,52 @@
         };
         let quizAtual = 0, quizRespostas = [];
 
+        // ===================== FIREBASE =====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCkkKvJ82dvMKd6XeK9JwEUbwpMuknPu7M",
+            authDomain: "ecotech-fsg.firebaseapp.com",
+            databaseURL: "https://ecotech-fsg-default-rtdb.firebaseio.com",
+            projectId: "ecotech-fsg",
+            storageBucket: "ecotech-fsg.firebasestorage.app",
+            messagingSenderId: "1012996653494",
+            appId: "1:1012996653494:web:18cf08cb41850e2e2a0117"
+        };
+        let firebaseAtivo = false;
+        try {
+            if (firebaseConfig.apiKey !== "COLE_AQUI") {
+                firebase.initializeApp(firebaseConfig);
+                window.db = firebase.database();
+                firebaseAtivo = true;
+            }
+        } catch (e) { console.warn('Firebase não configurado:', e); }
+
+        function sanitizar(str) {
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        function salvarNoRanking(nome, pontos) {
+            if (!firebaseAtivo) return;
+            const chave = nome.toLowerCase().replace(/[^a-z0-9]/g, '_');
+            const ref = db.ref('ranking/' + chave);
+            ref.once('value').then(snap => {
+                const atual = snap.val();
+                if (!atual || pontos > atual.pontos) {
+                    ref.set({ nome: nome, pontos: pontos, data: Date.now() });
+                }
+            }).catch(() => { });
+        }
+
+        function carregarRanking(callback) {
+            if (!firebaseAtivo) { callback(null); return; }
+            db.ref('ranking').orderByChild('pontos').limitToLast(20).once('value', snap => {
+                const dados = [];
+                snap.forEach(child => dados.push(child.val()));
+                callback(dados.reverse());
+            }).catch(() => callback(null));
+        }
+
         // ===================== MENU MOBILE =====================
         function toggleMenu() {
             const menu = document.getElementById('nav-mobile');
@@ -1772,6 +1821,7 @@
 
             adicionarConquista('quiz');
             if (total >= 15) adicionarConquista('sustent');
+            salvarNoRanking(estado.nomeQuiz, total);
 
             setTimeout(() => {
                 const sf = document.getElementById('sfill');
@@ -1926,20 +1976,31 @@
     </div>`;
             }).join('');
 
-            const meuPts = estado.conquistas.length * 4 + estado.leituras.length;
-            const ranking = [
-                { n: 'Maria S.', pts: 18, av: 'MS' }, { n: 'João P.', pts: 15, av: 'JP' },
-                { n: estado.nomeQuiz || 'Você', pts: meuPts, av: (estado.nomeQuiz || 'V').charAt(0).toUpperCase(), eu: true },
-                { n: 'Ana L.', pts: 10, av: 'AL' }, { n: 'Carlos R.', pts: 8, av: 'CR' }
-            ].sort((a, b) => b.pts - a.pts);
-            const med = ['🥇', '🥈', '🥉'];
-            document.getElementById('ranking-lista').innerHTML = ranking.map((r, i) => `
-    <div class="rank-item ${r.eu ? 'destaque' : ''}">
-      <div style="font-weight:900;font-size:1rem;min-width:24px;color:${i === 0 ? '#F4A261' : i === 1 ? '#888' : i === 2 ? '#CD7F32' : 'var(--cinza)'}">${i < 3 ? med[i] : `#${i + 1}`}</div>
-      <div class="avatar-sm ${r.eu ? 'eu' : ''}">${r.av}</div>
-      <div style="flex:1;font-weight:${r.eu ? 800 : 600};color:${r.eu ? 'var(--verde-escuro)' : 'var(--texto)'};font-size:.92rem">${r.n}${r.eu ? ' 👈' : ''}</div>
-      <div style="font-weight:800;color:var(--verde-claro)">${r.pts} pts</div>
-    </div>`).join('');
+            const meuNome = estado.nomeQuiz || 'Você';
+            function renderRanking(dados) {
+                const med = ['🥇', '🥈', '🥉'];
+                if (!dados) {
+                    const meuPts = estado.conquistas.length * 4 + estado.leituras.length;
+                    dados = [
+                        { nome: 'Maria S.', pontos: 18 }, { nome: 'João P.', pontos: 15 },
+                        { nome: meuNome, pontos: meuPts },
+                        { nome: 'Ana L.', pontos: 10 }, { nome: 'Carlos R.', pontos: 8 }
+                    ].sort((a, b) => b.pontos - a.pontos);
+                }
+                document.getElementById('ranking-lista').innerHTML = dados.map((r, i) => {
+                    const nome = sanitizar(r.nome);
+                    const eu = nome.toLowerCase() === meuNome.toLowerCase();
+                    const av = nome.substring(0, 2).toUpperCase();
+                    return `
+    <div class="rank-item ${eu ? 'destaque' : ''}">
+      <div style="font-weight:900;font-size:1rem;min-width:24px;color:${i === 0 ? '#F4A261' : i === 1 ? '#888' : i === 2 ? '#CD7F32' : 'var(--cinza)'}">${i < 3 ? med[i] : '#' + (i + 1)}</div>
+      <div class="avatar-sm ${eu ? 'eu' : ''}">${av}</div>
+      <div style="flex:1;font-weight:${eu ? 800 : 600};color:${eu ? 'var(--verde-escuro)' : 'var(--texto)'};font-size:.92rem">${nome}${eu ? ' 👈' : ''}</div>
+      <div style="font-weight:800;color:var(--verde-claro)">${r.pontos} pts</div>
+    </div>`;
+                }).join('');
+            }
+            carregarRanking(renderRanking);
         }
 
         // ===================== CONQUISTAS =====================
