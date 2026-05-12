@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTech — Plataforma de Conscientização Climática</title>
+    <link rel="icon" type="image/x-icon" href="favicon_io/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --verde: #2D6A4F;
+            --verde-claro: #52B788;
+            --verde-medio: #40916C;
+            --verde-escuro: #1B4332;
+            --verde-palido: #D8F3DC;
+            --verde-suave: #B7E4C7;
+            --cinza: #6C757D;
+            --cinza-claro: #F8F9FA;
+            --cinza-medio: #DEE2E6;
+            --texto: #212529;
+            --texto-sec: #495057;
+            --branco: #fff;
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--cinza-claro);
+            color: var(--texto);
+            min-height: 100vh
+        }
+
+        /* NAV */
+        .nav {
+            background: var(--verde-escuro);
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 62px;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            box-shadow: 0 2px 14px rgba(27, 67, 50, .35)
+        }
+
+        .logo {
+            color: #fff;
+            font-weight: 900;
+            font-size: 1.35rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: inherit
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap
+        }
+
+        .nav-btn {
+            color: #fff;
+            border: none;
+            padding: 7px 13px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: .82rem;
+            font-weight: 700;
+            transition: all .2s;
+            background: transparent;
+            font-family: inherit
+        }
+
+        .nav-btn.active {
+            background: var(--verde-claro)
+        }
+
+        .nav-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, .12)
+        }
+
+        .badge-cnt {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--verde-claro);
+            color: #fff;
+            border-radius: 50%;
+            width: 17px;
+            height: 17px;
+            font-size: .68rem;
+            font-weight: 900;
+            margin-left: 5px
+        }
+
+        /* NOTIFICAÇÃO */
+        .notif {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--verde-escuro);
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 14px;
+            box-shadow: 0 8px 28px rgba(27, 67, 50, .4);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            gap: 12px
+        }
+
+        .notif.show {
+            display: flex;
+            animation: fadeUp .35s ease
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        /* PÁGINAS */
+        .page {
+            display: none
+        }
+
+        .page.active {
+            display: block
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-medio) 55%, var(--verde-claro) 100%);
+            color: #fff;
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero h1 {
+            font-size: clamp(1.9rem, 5vw, 3.2rem);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 1rem
+        }
+
+        .hero p {
+            font-size: clamp(.95rem, 2.2vw, 1.2rem);
+            opacity: .9;
+            max-width: 580px;
+            margin: 0 auto 1.75rem;
+            line-height: 1.65
+        }
+
+        .hero-deco {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .06);
+            pointer-events: none
+        }
+
+        .hero-tags {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap
+        }
+
+        .hero-tag {
+            background: rgba(255, 255, 255, .15);
+            color: #fff;
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: .82rem;
+            font-weight: 700
+        }
+
+        /* FRASE BAR */
+        .frase-bar {
+            background: var(--verde-palido);
+            padding: .8rem 2rem;
+            text-align: center;
+            font-weight: 700;
+            color: var(--verde-medio);
+            font-size: .92rem;
+            transition: opacity .4s
+        }
+
+        /* SEÇÕES */
+        .secao {
+            padding: 3.5rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .sec-titulo {
+            font-size: clamp(1.4rem, 2.8vw, 2rem);
+            font-weight: 900;
+            color: var(--verde-escuro);
+            margin-bottom: .4rem;
+            text-align: center
+        }
+
+        .sec-sub {
+            color: var(--cinza);
+            text-align: center;
+            margin-bottom: 2.2rem;
+            line-height: 1.6;
+            font-size: .97rem
+        }
+
+        /* CARDS */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 1.2rem
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.75rem
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 14px rgba(45, 106, 79, .08);
+            border: 1px solid var(--verde-suave);
+            transition: transform .2s, box-shadow .2s
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(45, 106, 79, .15)
+        }
+
+        .card-icone {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: .9rem
+        }
+
+        .card h3 {
+            font-weight: 800;
+            color: var(--verde-escuro);
+            margin-bottom: .4rem;
+            font-size: 1rem
+        }
+
+        .card p {
+            color: var(--texto-sec);
+            line-height: 1.6;
+            font-size: .9rem
+        }
+
+        /* IMPACTO */
+        .impacto-sec {
+            background: linear-gradient(135deg, var(--verde-escuro), var(--verde-medio));
+            padding: 3.5rem 2rem
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, .1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: #fff;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, .18)
+        }
+
+        .stat-num {
+            font-size: 2.4rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: .3rem
+        }
+
+        /* BOTÕES */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 28px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+            transition: all .2s;
+            font-family: inherit
+        }
+
+        .btn-verde {
+            background: var(--verde-escuro);
+            color: #fff
+        }
+
+        .btn-verde:hover {
+            background: var(--verde-medio);
+            transform: translateY(-2px)
+        }
+
+        .btn-verde:disabled {
+            background: var(--cinza-medio);
+            color: #aaa;
+            cursor: not-allowed;
+            transform: none
+        }
+
+        .btn-outline {
+            background: #fff;
+            color: var(--verde-escuro);
+            border: 2px solid var(--verde-claro)
+        }
+
+        .btn-outline:hover {
+            background: var(--verde-palido)
+        }
+
+        .btn-hero {
+            background: #fff;
+            color: var(--verde-escuro);
+            border: none;
+            padding: 13px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all .2s;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, .18);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 4px;
+            font-family: inherit
+        }
+
+        .btn-hero:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 26px rgba(0, 0, 0, .22)
+        }
+
+        .btn-hero-outline {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #fff
+        }
+
+        .btn-hero-outline:hover {
+            background: rgba(255, 255, 255, .12)
+        }
+
+        .btn-group {
+            display: flex;
+            gap: .75rem;
+            flex-wrap: wrap;
+            margin-top: 1.25rem
+        }
+
+        /* BADGE */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--verde-palido);
+            color: var(--verde-escuro);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: .77rem;
+            font-weight: 700
+        }
+
+        /* PROGRESSO */
+        .prog-bar {
+            height: 10px;
+            background: var(--cinza-medio);
+            border-radius: 99px;
+            overflow: hidden
+        }
+
+        .prog-fill {
+            height: 100%;
+            background: var(--verde-claro);
+            border-radius: 99px;
+            transition: width .55s ease
+        }
+
+        .score-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, .3);
+            border-radius: 99px;
+            overflow: hidden;
+            margin: .75rem auto;
+            max-width: 360px
+        }
+
+        .score-fill {
+            height: 100%;
+            background: #fff;
+            border-radius: 99px;
+            transition: width 1.2s ease
+        }
+
+        /* QUIZ */
+        .quiz-intro-hero {
+            background: linear-gradient(135deg, var(--verde-escuro), var(--verde-medio));
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            color: #fff;
+            margin-bottom: 1.5rem
+        }
+
+        .quiz-intro-hero h2 {
+            font-size: 1.75rem;
+            font-weight: 900;
+            margin-bottom: .5rem
+        }
+
+        .campo-nome {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 2px solid var(--cinza-medio);
+            font-size: 1.1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color .2s;
+            text-align: center;
+            font-weight: 700;
+            color: var(--texto)
+        }
+
+        .campo-nome:focus {
+            border-color: var(--verde-claro)
+        }
+
+        .campo-nome::placeholder {
+            font-weight: 400;
+            color: #bbb
+        }
+
+        .saudacao {
+            font-size: .85rem;
+            font-weight: 700;
+            color: var(--verde-medio);
+            text-align: center;
+            margin-bottom: .75rem;
+            min-height: 1.2rem
+        }
+
+        .q-icone {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: .75rem
+        }
+
+        .q-texto {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--verde-escuro);
+            line-height: 1.45;
+            margin-bottom: 1.5rem;
+            text-align: center
+        }
+
+        .opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: .6rem
+        }
+
+        .opcao {
+            width: 100%;
+            padding: 13px 18px;
+            border-radius: 12px;
+            border: 2px solid var(--cinza-medio);
+            background: #fff;
+            text-align: left;
+            cursor: pointer;
+            font-size: .97rem;
+            font-weight: 600;
+            color: var(--texto);
+            transition: all .15s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .opcao:hover {
+            border-color: var(--verde-claro);
+            background: var(--verde-palido);
+            color: var(--verde-escuro)
+        }
+
+        .letra {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--cinza-medio);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .78rem;
+            font-weight: 900;
+            color: var(--cinza);
+            flex-shrink: 0;
+            transition: all .15s
+        }
+
+        .opcao:hover .letra {
+            background: var(--verde-claro);
+            color: #fff
+        }
+
+        /* RESULTADO QUIZ */
+        .resultado-hero {
+            border-radius: 18px;
+            padding: 2.2rem 1.75rem;
+            text-align: center;
+            margin-bottom: 1.25rem
+        }
+
+        .resultado-nivel {
+            font-size: .88rem;
+            font-weight: 700;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            margin-bottom: .4rem;
+            opacity: .85
+        }
+
+        .resultado-titulo {
+            font-size: 2rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: .5rem
+        }
+
+        .resultado-pontos {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin: .6rem 0
+        }
+
+        .resultado-desc {
+            font-size: .97rem;
+            line-height: 1.65;
+            opacity: .92;
+            max-width: 480px;
+            margin: 0 auto
+        }
+
+        .parabeniza {
+            background: var(--verde-palido);
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--verde-suave)
+        }
+
+        .parabeniza-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--verde-escuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #fff;
+            font-weight: 900;
+            flex-shrink: 0
+        }
+
+        .breakdown {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid var(--cinza-medio)
+        }
+
+        .breakdown h4 {
+            font-weight: 800;
+            color: var(--verde-escuro);
+            margin-bottom: 1rem;
+            font-size: .95rem
+        }
+
+        .bitem {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: .75rem
+        }
+
+        .bitem:last-child {
+            margin-bottom: 0
+        }
+
+        .bitem-icone {
+            font-size: 1.1rem;
+            width: 28px;
+            text-align: center;
+            flex-shrink: 0
+        }
+
+        .bitem-label {
+            font-size: .85rem;
+            font-weight: 700;
+            color: var(--texto-sec);
+            width: 110px;
+            flex-shrink: 0
+        }
+
+        .bitem-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--cinza-medio);
+            border-radius: 99px;
+            overflow: hidden
+        }
+
+        .bitem-fill {
+            height: 100%;
+            border-radius: 99px;
+            transition: width 1s ease
+        }
+
+        .bitem-pts {
+            font-size: .82rem;
+            font-weight: 900;
+            width: 60px;
+            text-align: right;
+            flex-shrink: 0
+        }
+
+        .dica-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: var(--verde-palido);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: .6rem;
+            border-left: 4px solid var(--verde-claro)
+        }
+
+        .dica-icone {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 1px
+        }
+
+        .dica-texto {
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--verde-escuro);
+            line-height: 1.5
+        }
+
+        .prox-passo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--verde-palido);
+            border-radius: 10px;
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--verde-escuro);
+            margin-bottom: .5rem
+        }
+
+        /* CALCULADORA */
+        .range-wrap {
+            margin-bottom: 1.25rem
+        }
+
+        .range-label {
+            font-size: .88rem;
+            font-weight: 700;
+            color: var(--texto-sec);
+            display: block;
+            margin-bottom: 4px
+        }
+
+        .range-val {
+            color: var(--verde-claro);
+            font-weight: 800
+        }
+
+        input[type=range] {
+            width: 100%;
+            accent-color: var(--verde-claro);
+            cursor: pointer
+        }
+
+        .range-hints {
+            display: flex;
+            justify-content: space-between;
+            font-size: .75rem;
+            color: var(--cinza);
+            margin-top: 2px
+        }
+
+        .metric-mini {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid var(--cinza-medio)
+        }
+
+        .metric-mini-icone {
+            font-size: 1.4rem;
+            margin-bottom: .3rem
+        }
+
+        .metric-mini-val {
+            font-size: 1.35rem;
+            font-weight: 900;
+            line-height: 1
+        }
+
+        .metric-mini-label {
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--cinza);
+            margin-top: 3px
+        }
+
+        /* EDUCAÇÃO */
+        .edu-item {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(45, 106, 79, .07);
+            border: 1px solid var(--verde-suave);
+            cursor: pointer;
+            margin-bottom: .75rem;
+            transition: box-shadow .2s
+        }
+
+        .edu-item:hover {
+            box-shadow: 0 6px 20px rgba(45, 106, 79, .13)
+        }
+
+        .edu-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem
+        }
+
+        .edu-arrow {
+            color: var(--cinza);
+            font-size: 1.1rem;
+            transition: transform .2s;
+            margin-left: auto
+        }
+
+        .edu-conteudo {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--cinza-medio)
+        }
+
+        .edu-conteudo.open {
+            display: block
+        }
+
+        .edu-dica {
+            border-radius: 10px;
+            padding: 11px 14px;
+            margin-top: .75rem
+        }
+
+        /* PERFIL */
+        .rank-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 12px;
+            background: var(--cinza-claro);
+            border: 1px solid var(--cinza-medio);
+            margin-bottom: .6rem
+        }
+
+        .rank-item.destaque {
+            background: var(--verde-palido);
+            border: 2px solid var(--verde-suave)
+        }
+
+        .avatar-sm {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .72rem;
+            font-weight: 800;
+            flex-shrink: 0;
+            background: var(--cinza-medio);
+            color: var(--cinza)
+        }
+
+        .avatar-sm.eu {
+            background: var(--verde-claro);
+            color: #fff
+        }
+
+        .badge-perfil {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 12px;
+            background: var(--cinza-claro);
+            border: 1px solid var(--cinza-medio);
+            margin-bottom: .6rem;
+            opacity: .4
+        }
+
+        .badge-perfil.desbloqueado {
+            background: var(--verde-palido);
+            border-color: var(--verde-suave);
+            opacity: 1
+        }
+
+        .p-stat {
+            background: var(--verde-palido);
+            border-radius: 12px;
+            padding: .85rem;
+            text-align: center
+        }
+
+        .p-stat-num {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--verde);
+            line-height: 1
+        }
+
+        .p-stat-label {
+            font-size: .72rem;
+            color: var(--cinza);
+            font-weight: 600;
+            margin-top: 3px
+        }
+
+        /* CTA */
+        .cta-sec {
+            text-align: center;
+            padding: 3.5rem 2rem
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--verde-escuro);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            margin-top: 3rem
+        }
+
+        .footer-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem
+        }
+
+        .footer-titulo {
+            font-size: .75rem;
+            font-weight: 800;
+            opacity: .5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: .75rem
+        }
+
+        footer p {
+            opacity: .8;
+            font-size: .88rem;
+            line-height: 1.6
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin-bottom: .35rem;
+            opacity: .8;
+            font-size: .88rem;
+            cursor: pointer
+        }
+
+        footer a:hover {
+            opacity: 1
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, .15);
+            margin-top: 1.75rem;
+            padding-top: 1.25rem;
+            text-align: center;
+            opacity: .5;
+            font-size: .8rem
+        }
+
+        /* UTILITÁRIOS */
+        .verde-bg {
+            background: var(--verde-palido);
+            padding: 3.5rem 2rem
+        }
+
+        .mt-1 {
+            margin-top: .5rem
+        }
+
+        .mt-2 {
+            margin-top: 1rem
+        }
+
+        .mt-3 {
+            margin-top: 1.5rem
+        }
+
+        .text-center {
+            text-align: center
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .gap-sm {
+            gap: .5rem
+        }
+
+        .info-box {
+            background: var(--verde-palido);
+            border: 1px solid var(--verde-suave);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem
+        }
+
+        @media(max-width:600px) {
+            .nav-links {
+                gap: 2px
+            }
+
+            .nav-btn {
+                padding: 6px 9px;
+                font-size: .75rem
+            }
+
+            .hero {
+                padding: 3rem 1.25rem
+            }
+
+            .secao {
+                padding: 2.5rem 1.25rem
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NOTIFICAÇÃO CONQUISTA -->
+    <div class="notif" id="notif">
+        <span style="font-size:2rem" id="notif-icone">🏅</span>
+        <div>
+            <div style="font-weight:800;font-size:.92rem">🏅 Conquista desbloqueada!</div>
+            <div style="opacity:.8;font-size:.82rem" id="notif-nome"></div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="nav">
+        <button class="logo" onclick="navegar('inicio')">🌿 EcoTech</button>
+        <div class="nav-links">
+            <button class="nav-btn active" data-page="inicio" onclick="navegar('inicio')">🏠 Início</button>
+            <button class="nav-btn" data-page="quiz" onclick="navegar('quiz')">🎯 Quiz</button>
+            <button class="nav-btn" data-page="calc" onclick="navegar('calc')">📊 Calculadora</button>
+            <button class="nav-btn" data-page="educar" onclick="navegar('educar')">📚 Aprender</button>
+            <button class="nav-btn" data-page="perfil" onclick="navegar('perfil')">🌿 Perfil<span class="badge-cnt"
+                    id="badge-cnt" style="display:none">0</span></button>
+        </div>
+    </nav>
+
+    <!-- ===================== PÁGINA: INÍCIO ===================== -->
+    <div class="page active" id="page-inicio">
+        <div class="hero">
+            <div style="position:relative;z-index:1">
+                <div style="font-size:3.5rem;margin-bottom:.75rem">🌿</div>
+                <h1>Cuide do planeta.<br>Comece pela sua casa.</h1>
+                <p>A EcoTech é uma plataforma educativa gratuita que ajuda você e sua família a adotarem hábitos mais
+                    sustentáveis no dia a dia — de forma simples, prática e eficaz.</p>
+                <div>
+                    <button class="btn-hero" onclick="navegar('quiz')">🎯 Fazer o Quiz Ambiental</button>
+                    <button class="btn-hero btn-hero-outline" onclick="navegar('educar')">📚 Aprender Agora</button>
+                </div>
+                <div class="hero-tags">
+                    <span class="hero-tag">✓ ODS 13 — Ação Climática</span>
+                    <span class="hero-tag">✓ Projeto Extensionista</span>
+                    <span class="hero-tag">✓ Gratuito e Aberto</span>
+                </div>
+            </div>
+            <div class="hero-deco" style="top:-70px;right:-70px;width:300px;height:300px"></div>
+            <div class="hero-deco" style="bottom:-50px;left:-50px;width:220px;height:220px"></div>
+        </div>
+
+        <div class="frase-bar" id="frase-bar">🌱 Cada pequena ação conta para um futuro mais verde.</div>
+
+        <!-- Por que importa -->
+        <div class="secao">
+            <h2 class="sec-titulo">Por que isso importa?</h2>
+            <p class="sec-sub">Entender o problema é o primeiro passo para a mudança.</p>
+            <div class="grid-3">
+                <div class="card" style="border-top:4px solid var(--verde-claro)">
+                    <div style="font-size:2.2rem;margin-bottom:.7rem">🌡️</div>
+                    <h3>Mudanças climáticas</h3>
+                    <p>A temperatura global já subiu 1,2°C. Cada grau a mais tem consequências severas para populações
+                        vulneráveis, ecossistemas e a segurança alimentar mundial.</p>
+                </div>
+                <div class="card" style="border-top:4px solid var(--verde-claro)">
+                    <div style="font-size:2.2rem;margin-bottom:.7rem">🗑️</div>
+                    <h3>Desperdício crescente</h3>
+                    <p>O Brasil gera mais de 80 milhões de toneladas de resíduos por ano. Grande parte poderia ser
+                        reciclada ou compostada, mas vai direto para aterros.</p>
+                </div>
+                <div class="card" style="border-top:4px solid var(--verde-claro)">
+                    <div style="font-size:2.2rem;margin-bottom:.7rem">💧</div>
+                    <h3>Escassez de água</h3>
+                    <p>Apenas 3% da água do planeta é potável, e parcela mínima está acessível. O desperdício doméstico
+                        é um dos maiores problemas que podemos resolver juntos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pequenas ações -->
+        <div class="verde-bg">
+            <div style="max-width:1100px;margin:0 auto">
+                <h2 class="sec-titulo">Pequenas ações, grande impacto</h2>
+                <p class="sec-sub">Hábitos simples que qualquer pessoa pode adotar hoje mesmo.</p>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-icone" style="background:#4895EF22">💧</div>
+                        <h3>Economize água</h3>
+                        <p>Banhos curtos e torneiras fechadas poupam milhares de litros por ano. Uma mudança simples de
+                            hábito que faz enorme diferença.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icone" style="background:#52B78822">♻️</div>
+                        <h3>Recicle sempre</h3>
+                        <p>Separe o lixo corretamente em seco, orgânico e rejeito. Pequenos gestos transformam grandes
+                            problemas ambientais.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icone" style="background:#F4A26122">⚡</div>
+                        <h3>Reduza energia</h3>
+                        <p>Desligue luzes e aparelhos da tomada. O stand-by pode representar até 12% da sua conta de
+                            energia elétrica.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icone" style="background:#9B5DE522">📱</div>
+                        <h3>Descarte certo</h3>
+                        <p>Lixo eletrônico tem ponto de coleta específico. Não contamine o solo com metais pesados que
+                            demoram décadas para se decompor.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icone" style="background:#2D6A4F22">🌱</div>
+                        <h3>Reutilize</h3>
+                        <p>Antes de jogar fora, pergunte: posso usar isso de outra forma? A reutilização é a forma mais
+                            eficiente de sustentabilidade.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icone" style="background:#40916C22">🚲</div>
+                        <h3>Mobilidade verde</h3>
+                        <p>Caminhe, pedale ou use transporte coletivo sempre que possível. Seu corpo e o planeta saem
+                            ganhando.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Impacto -->
+        <div class="impacto-sec">
+            <div style="max-width:1100px;margin:0 auto">
+                <h2 class="sec-titulo" style="color:#fff;margin-bottom:2rem">Nosso impacto coletivo</h2>
+                <div class="grid-4">
+                    <div class="stat-card">
+                        <div class="stat-num">3,2M</div>
+                        <div style="font-weight:700;font-size:.95rem;margin-bottom:.2rem">Litros economizados</div>
+                        <div style="opacity:.7;font-size:.82rem">pela nossa comunidade</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num">18.500</div>
+                        <div style="font-weight:700;font-size:.95rem;margin-bottom:.2rem">kWh poupados</div>
+                        <div style="opacity:.7;font-size:.82rem">equivale a 420 famílias/mês</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num">4,7T</div>
+                        <div style="font-weight:700;font-size:.95rem;margin-bottom:.2rem">Toneladas recicladas</div>
+                        <div style="opacity:.7;font-size:.82rem">redirecionadas dos aterros</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num">12.300</div>
+                        <div style="font-weight:700;font-size:.95rem;margin-bottom:.2rem">Pessoas impactadas</div>
+                        <div style="opacity:.7;font-size:.82rem">na região</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-sec">
+            <h2 class="sec-titulo">Pronto para começar?</h2>
+            <p class="sec-sub" style="margin-bottom:1.5rem">Descubra seu perfil ambiental e receba dicas personalizadas
+                para você.</p>
+            <button class="btn btn-verde" onclick="navegar('quiz')">🌍 Iniciar Quiz Ambiental</button>
+        </div>
+    </div>
+
+    <!-- ===================== PÁGINA: QUIZ ===================== -->
+    <div class="page" id="page-quiz">
+        <div class="secao" style="max-width:700px">
+
+            <!-- Etapa: Nome -->
+            <div id="q-nome">
+                <div class="quiz-intro-hero">
+                    <div style="font-size:3rem;margin-bottom:.75rem">🎯</div>
+                    <h2>Quiz Ambiental</h2>
+                    <p style="opacity:.88;line-height:1.6;font-size:.97rem;margin-top:.4rem">Descubra seu perfil
+                        ecológico em 6 perguntas e receba um relatório personalizado com dicas práticas para um futuro
+                        mais verde.</p>
+                </div>
+                <div class="card">
+                    <div style="text-align:center;margin-bottom:1.5rem">
+                        <div style="font-size:1.6rem;margin-bottom:.5rem">👋</div>
+                        <h3 style="font-weight:800;color:var(--verde-escuro);font-size:1.1rem;margin-bottom:.3rem">Antes
+                            de começar…</h3>
+                        <p style="color:var(--cinza);font-size:.9rem">Como podemos te chamar? Seu relatório será
+                            completamente personalizado!</p>
+                    </div>
+                    <input class="campo-nome" id="campo-nome" type="text" placeholder="Digite seu nome aqui"
+                        maxlength="30" oninput="verificarNome()" onkeydown="if(event.key==='Enter')comecarQuiz()">
+                    <div style="margin-top:1rem;text-align:center">
+                        <button class="btn btn-verde" id="btn-comecar" onclick="comecarQuiz()" disabled>🚀 Começar o
+                            Quiz</button>
+                    </div>
+                    <div style="display:flex;justify-content:center;gap:1.75rem;margin-top:1.5rem;flex-wrap:wrap">
+                        <div style="text-align:center">
+                            <div style="font-size:1.2rem">⏱️</div>
+                            <div style="font-size:.77rem;font-weight:700;color:var(--cinza)">~2 minutos</div>
+                        </div>
+                        <div style="text-align:center">
+                            <div style="font-size:1.2rem">❓</div>
+                            <div style="font-size:.77rem;font-weight:700;color:var(--cinza)">6 perguntas</div>
+                        </div>
+                        <div style="text-align:center">
+                            <div style="font-size:1.2rem">📊</div>
+                            <div style="font-size:.77rem;font-weight:700;color:var(--cinza)">Relatório completo</div>
+                        </div>
+                        <div style="text-align:center">
+                            <div style="font-size:1.2rem">🏅</div>
+                            <div style="font-size:.77rem;font-weight:700;color:var(--cinza)">Conquistas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Etapa: Perguntas -->
+            <div id="q-perguntas" style="display:none">
+                <div style="margin-bottom:1.5rem">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                        <span style="font-size:.83rem;font-weight:700;color:var(--cinza)" id="q-num-txt">Pergunta 1 de
+                            6</span>
+                        <span style="font-size:.83rem;font-weight:800;color:var(--verde-claro)" id="q-pct-txt">0%</span>
+                    </div>
+                    <div class="prog-bar">
+                        <div class="prog-fill" id="q-prog" style="width:0%"></div>
+                    </div>
+                </div>
+                <div class="saudacao" id="q-saudacao"></div>
+                <div class="card" style="padding:2rem">
+                    <div class="q-icone" id="q-icone">♻️</div>
+                    <div class="q-texto" id="q-texto"></div>
+                    <div class="opcoes" id="q-opcoes"></div>
+                </div>
+            </div>
+
+            <!-- Etapa: Resultado -->
+            <div id="q-resultado" style="display:none"></div>
+
+        </div>
+    </div>
+
+    <!-- ===================== PÁGINA: CALCULADORA ===================== -->
+    <div class="page" id="page-calc">
+        <div class="secao">
+            <h2 class="sec-titulo">Calculadora Sustentável</h2>
+            <p class="sec-sub">Ajuste os controles com seus hábitos reais e veja seu impacto ambiental estimado.</p>
+            <div class="grid-2">
+                <!-- Formulário -->
+                <div class="card" style="padding:2rem">
+                    <h3 style="font-weight:800;color:var(--verde-escuro);margin-bottom:1.5rem;font-size:1.05rem">📝 Seus
+                        hábitos diários</h3>
+
+                    <div class="range-wrap">
+                        <label class="range-label">💧 Duração média do banho: <span class="range-val" id="v-banho">10
+                                min</span></label>
+                        <input type="range" min="2" max="30" step="1" value="10"
+                            oninput="atualizarRange(this,'banho',' min')">
+                        <div class="range-hints"><span>2 min</span><span>30 min</span></div>
+                    </div>
+
+                    <div class="range-wrap">
+                        <label class="range-label">♻️ Porcentagem de lixo reciclado: <span class="range-val"
+                                id="v-rec">20%</span></label>
+                        <input type="range" min="0" max="100" step="1" value="20"
+                            oninput="atualizarRange(this,'rec','%')">
+                        <div class="range-hints"><span>0%</span><span>100%</span></div>
+                    </div>
+
+                    <div class="range-wrap">
+                        <label class="range-label">⚡ Consumo mensal de energia: <span class="range-val" id="v-en">150
+                                kWh</span></label>
+                        <input type="range" min="50" max="500" step="10" value="150"
+                            oninput="atualizarRange(this,'en',' kWh')">
+                        <div class="range-hints"><span>50</span><span>500</span></div>
+                    </div>
+
+                    <div class="range-wrap" style="margin-bottom:1.5rem">
+                        <label class="range-label">🛍️ Itens plásticos descartáveis/semana: <span class="range-val"
+                                id="v-pl">5</span></label>
+                        <input type="range" min="0" max="20" step="1" value="5" oninput="atualizarRange(this,'pl','')">
+                        <div class="range-hints"><span>0</span><span>20</span></div>
+                    </div>
+
+                    <button class="btn btn-verde" onclick="calcularImpacto()">🔍 Calcular Impacto</button>
+                </div>
+
+                <!-- Resultado -->
+                <div id="calc-resultado">
+                    <div class="card"
+                        style="padding:2rem;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px">
+                        <div style="font-size:3rem;margin-bottom:1rem">🌱</div>
+                        <p style="color:var(--cinza)">Ajuste os controles ao lado e clique em <strong>"Calcular
+                                Impacto"</strong> para ver seu relatório ambiental personalizado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== PÁGINA: EDUCAR ===================== -->
+    <div class="page" id="page-educar">
+        <div class="secao">
+            <h2 class="sec-titulo">Área Educacional</h2>
+            <p class="sec-sub">Conteúdos simples e práticos para você e sua família. Clique em cada tópico para
+                expandir.</p>
+            <div class="info-box" id="edu-info">
+                <span style="font-size:1.4rem">📖</span>
+                <div><span style="font-weight:700;color:var(--verde)">Você leu 0 de 6 tópicos.</span> <span
+                        style="color:var(--verde-medio);font-size:.88rem">Leia 3 ou mais para ganhar a conquista
+                        "Aprendiz Eco"!</span></div>
+            </div>
+            <div id="edu-lista"></div>
+        </div>
+    </div>
+
+    <!-- ===================== PÁGINA: PERFIL ===================== -->
+    <div class="page" id="page-perfil">
+        <div class="secao">
+            <h2 class="sec-titulo">Meu Perfil Ecológico</h2>
+            <p class="sec-sub">Acompanhe suas conquistas e seu progresso na plataforma.</p>
+            <div class="grid-2">
+                <!-- Esquerda -->
+                <div>
+                    <div class="card"
+                        style="padding:2rem;text-align:center;border-top:4px solid var(--verde-claro);margin-bottom:1.25rem">
+                        <div style="font-size:2.8rem;margin-bottom:.5rem">🌿</div>
+                        <h3 style="font-weight:900;color:var(--verde-escuro);font-size:1.3rem;margin-bottom:1rem">Seu
+                            progresso</h3>
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem">
+                            <div class="p-stat">
+                                <div style="font-size:1.2rem">🏆</div>
+                                <div class="p-stat-num" id="p-conquistas">0</div>
+                                <div class="p-stat-label">Conquistas</div>
+                            </div>
+                            <div class="p-stat">
+                                <div style="font-size:1.2rem">📚</div>
+                                <div class="p-stat-num" id="p-leituras">0</div>
+                                <div class="p-stat-label">Tópicos lidos</div>
+                            </div>
+                            <div class="p-stat">
+                                <div style="font-size:1.2rem">⭐</div>
+                                <div class="p-stat-num" id="p-pontos">0</div>
+                                <div class="p-stat-label">Pontos eco</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="padding:1.5rem">
+                        <h4 style="font-weight:800;color:var(--verde-escuro);margin-bottom:1rem">🏅 Conquistas</h4>
+                        <div id="badges-lista"></div>
+                    </div>
+                </div>
+                <!-- Direita: ranking -->
+                <div class="card" style="padding:1.5rem">
+                    <h4 style="font-weight:800;color:var(--verde-escuro);margin-bottom:1rem">🏆 Ranking da Comunidade
+                    </h4>
+                    <div id="ranking-lista"></div>
+                    <div
+                        style="margin-top:.75rem;padding:12px;background:var(--verde-palido);border-radius:10px;font-size:.83rem;color:var(--verde-medio);font-weight:600;text-align:center">
+                        📈 Complete o quiz e leia mais tópicos para subir no ranking!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div style="font-weight:900;font-size:1.4rem;margin-bottom:.6rem">🌿 EcoTech</div>
+                <p>Plataforma educacional gratuita de conscientização climática. Projeto de extensão universitária
+                    alinhado ao ODS 13.</p>
+            </div>
+            <div>
+                <div class="footer-titulo">Navegação</div>
+                <a onclick="navegar('inicio')">🏠 Início</a>
+                <a onclick="navegar('quiz')">🎯 Quiz Ambiental</a>
+                <a onclick="navegar('calc')">📊 Calculadora</a>
+                <a onclick="navegar('educar')">📚 Aprender</a>
+                <a onclick="navegar('perfil')">🌿 Meu Perfil</a>
+            </div>
+            <div>
+                <div class="footer-titulo">Sobre o Projeto</div>
+                <p>Desenvolvido como atividade extensionista do curso de Ciência da Computação, alinhado ao Objetivo de
+                    Desenvolvimento Sustentável nº 13.</p>
+                <div style="margin-top:.75rem;display:flex;gap:6px;flex-wrap:wrap">
+                    <span
+                        style="background:rgba(255,255,255,.15);color:#fff;border-radius:20px;padding:4px 12px;font-size:.77rem;font-weight:700">ODS
+                        13</span>
+                    <span
+                        style="background:rgba(255,255,255,.15);color:#fff;border-radius:20px;padding:4px 12px;font-size:.77rem;font-weight:700">Extensão
+                        Universitária</span>
+                    <span
+                        style="background:rgba(255,255,255,.15);color:#fff;border-radius:20px;padding:4px 12px;font-size:.77rem;font-weight:700">Código
+                        Aberto</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2025 EcoTech — Projeto de Extensão Universitária · Dados simulados para fins
+            educacionais.</div>
+    </footer>
+
+    <script>
+        // ===================== DADOS =====================
+        const FRASES = [
+            "🌱 Cada pequena ação conta para um futuro mais verde.",
+            "💧 Água é vida. Cuide dela como se fosse sua.",
+            "♻️ Reciclar é um ato de amor ao planeta.",
+            "🌍 A Terra não é herança dos nossos pais — é empréstimo dos nossos filhos.",
+            "⚡ Economizar energia hoje é garantir luz para o amanhã.",
+            "🌿 Sustentabilidade não é um destino — é uma jornada diária.",
+        ];
+
+        const PERGUNTAS = [
+            { p: "Com que frequência você separa o lixo reciclável em casa?", ops: ["Sempre separo corretamente", "Separo às vezes", "Separo raramente", "Nunca separo"], pts: [3, 2, 1, 0], i: "♻️", cat: "Reciclagem" },
+            { p: "Quanto tempo dura o seu banho em média?", ops: ["Menos de 5 minutos", "Entre 5 e 10 minutos", "Entre 10 e 15 minutos", "Mais de 15 minutos"], pts: [3, 2, 1, 0], i: "🚿", cat: "Água" },
+            { p: "Você apaga as luzes e desliga aparelhos ao sair do cômodo?", ops: ["Sempre faço isso", "Na maioria das vezes", "Raramente lembro", "Nunca faço isso"], pts: [3, 2, 1, 0], i: "💡", cat: "Energia" },
+            { p: "Você reutiliza sacolas, garrafas ou outros materiais?", ops: ["Sempre reutilizo tudo que posso", "Às vezes reutilizo", "Raramente penso nisso", "Nunca reutilizo"], pts: [3, 2, 1, 0], i: "🛍️", cat: "Consumo" },
+            { p: "Como você costuma se locomover para atividades do dia a dia?", ops: ["A pé, bicicleta ou transporte coletivo", "Mistura carro e transporte público", "Quase sempre de carro", "Sempre de carro sozinho"], pts: [3, 2, 1, 0], i: "🚲", cat: "Mobilidade" },
+            { p: "Você descarta corretamente pilhas, eletrônicos e baterias velhas?", ops: ["Sempre levo ao ponto de coleta", "Às vezes, quando lembro", "Raramente faço isso", "Jogo no lixo comum"], pts: [3, 2, 1, 0], i: "📱", cat: "E-lixo" },
+        ];
+
+        const CONTEUDOS = [
+            { t: "Como reciclar corretamente", i: "♻️", c: "#52B788", tag: "Reciclagem", txt: "Separar o lixo corretamente é o primeiro passo para um Brasil mais limpo. Lixo seco (papel, plástico, metal, vidro) vai para a coleta seletiva. Lixo orgânico pode virar adubo. Lixo eletrônico tem pontos de coleta específicos em lojas e shoppings. Uma simples divisão de lixeiras em casa já faz enorme diferença!", dica: "Coloque 3 lixeiras na cozinha: seco, orgânico e rejeito." },
+            { t: "Economia de água no dia a dia", i: "💧", c: "#4895EF", tag: "Água", txt: "Fechar a torneira ao escovar os dentes economiza até 12 litros por minuto. Banhos curtos (máx. 5 min) poupam centenas de litros por mês. Reaproveitar água da chuva para jardim e limpeza é simples e muito eficaz. Verifique vazamentos com frequência — um pingando pode desperdiçar até 46 litros por dia.", dica: "Um banho 5 min mais curto por dia = 1.825 litros economizados por ano." },
+            { t: "Reduzindo o consumo de energia", i: "⚡", c: "#F4A261", tag: "Energia", txt: "Desligar aparelhos da tomada (stand-by consome até 12% da sua conta!), usar lâmpadas LED, aproveitar a luz natural e preferir eletrodomésticos com selo Procel são hábitos que reduzem sua conta e o impacto ambiental. Lavar roupas com água fria e aproveitar o sol para secar também ajudam muito.", dica: "Lâmpadas LED gastam 80% menos energia que as incandescentes comuns." },
+            { t: "Descarte correto de eletrônicos", i: "📱", c: "#9B5DE5", tag: "E-lixo", txt: "Celulares, pilhas, baterias e eletrônicos contêm metais pesados como chumbo e mercúrio que contaminam solo e água por décadas. Leve-os sempre a pontos de coleta em lojas, shoppings ou postos da prefeitura. Nunca jogue no lixo comum. Muitas marcas oferecem programas de coleta gratuitos.", dica: "1 pilha pequena pode contaminar até 1 m² de solo por 50 anos." },
+            { t: "Consumo consciente", i: "🛒", c: "#2D6A4F", tag: "Consumo", txt: "Antes de comprar, pergunte-se: realmente preciso disso? Posso alugar, emprestar ou comprar usado? Prefira produtos locais, com menos embalagem e maior durabilidade. O consumo consciente reduz lixo, poupa dinheiro e protege o planeta. A moda sustentável e a economia circular são tendências que já chegaram ao Brasil.", dica: "Comprar menos e melhor é a forma mais eficaz de sustentabilidade." },
+            { t: "Sustentabilidade em casa", i: "🏡", c: "#40916C", tag: "Casa", txt: "Compostagem doméstica, horta em vasos, captação de água da chuva, uso de produtos de limpeza biodegradáveis e sacolas reutilizáveis são práticas simples que transformam o lar em um espaço sustentável. Mesmo pequenos apartamentos podem ter hortas verticais e composteiras compactas.", dica: "Uma horta em vasos reduz gastos com alimentação e ensina sustentabilidade às crianças." },
+        ];
+
+        const BADGES = [
+            { id: "quiz", n: "Quiz Ambiental", i: "🏆", d: "Completou o quiz pela primeira vez" },
+            { id: "calc", n: "Calculador Verde", i: "🌿", d: "Usou a calculadora sustentável" },
+            { id: "aprend", n: "Aprendiz Eco", i: "📚", d: "Leu 3 ou mais tópicos educativos" },
+            { id: "sustent", n: "Guardião do Planeta", i: "🌍", d: "Pontuou 15 ou mais pontos no quiz" },
+        ];
+
+        // ===================== ESTADO =====================
+        const estado = {
+            conquistas: [],
+            leituras: [],
+            nomeQuiz: '',
+            calcVals: { banho: 10, rec: 20, en: 150, pl: 5 },
+        };
+        let quizAtual = 0, quizRespostas = [];
+
+        // ===================== NAVEGAÇÃO =====================
+        function navegar(p) {
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('page-' + p).classList.add('active');
+            const btn = document.querySelector('.nav-btn[data-page="' + p + '"]');
+            if (btn) btn.classList.add('active');
+            if (p === 'perfil') atualizarPerfil();
+            if (p === 'educar') renderEdu();
+            window.scrollTo(0, 0);
+        }
+
+        // ===================== FRASES ROTATIVAS =====================
+        let fIdx = 0;
+        setInterval(() => {
+            const el = document.getElementById('frase-bar');
+            if (!el) return;
+            el.style.opacity = '0';
+            setTimeout(() => { fIdx = (fIdx + 1) % FRASES.length; el.textContent = FRASES[fIdx]; el.style.opacity = '1'; }, 400);
+        }, 4000);
+
+        // ===================== QUIZ =====================
+        function verificarNome() {
+            const v = document.getElementById('campo-nome').value.trim();
+            document.getElementById('btn-comecar').disabled = v.length < 2;
+        }
+
+        function comecarQuiz() {
+            const nome = document.getElementById('campo-nome').value.trim();
+            if (nome.length < 2) return;
+            estado.nomeQuiz = nome;
+            quizAtual = 0; quizRespostas = [];
+            document.getElementById('q-nome').style.display = 'none';
+            document.getElementById('q-perguntas').style.display = 'block';
+            document.getElementById('q-resultado').style.display = 'none';
+            renderPergunta();
+        }
+
+        function primeiroNome() { return estado.nomeQuiz.split(' ')[0]; }
+
+        function renderPergunta() {
+            const q = PERGUNTAS[quizAtual];
+            const pct = Math.round(quizAtual / PERGUNTAS.length * 100);
+            document.getElementById('q-prog').style.width = pct + '%';
+            document.getElementById('q-pct-txt').textContent = pct + '%';
+            document.getElementById('q-num-txt').textContent = `Pergunta ${quizAtual + 1} de ${PERGUNTAS.length}`;
+            const saud = quizAtual === 0 ? `Vamos lá, ${primeiroNome()}! 💪` : quizAtual === 3 ? `Você está na metade, ${primeiroNome()}! 🌱` : quizAtual === 5 ? `Última pergunta, ${primeiroNome()}! 🌟` : '';
+            document.getElementById('q-saudacao').textContent = saud;
+            document.getElementById('q-icone').textContent = q.i;
+            document.getElementById('q-texto').textContent = q.p;
+            const el = document.getElementById('q-opcoes');
+            el.innerHTML = '';
+            q.ops.forEach((op, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'opcao';
+                btn.innerHTML = `<span class="letra">${'ABCD'[i]}</span>${op}`;
+                btn.onclick = () => responderQuiz(q.pts[i], i);
+                el.appendChild(btn);
+            });
+        }
+
+        function responderQuiz(pts) {
+            const q = PERGUNTAS[quizAtual];
+            quizRespostas.push({ pts, cat: q.cat, icone: q.i, idx: quizAtual });
+            quizAtual++;
+            if (quizAtual >= PERGUNTAS.length) mostrarResultadoQuiz();
+            else renderPergunta();
+        }
+
+        function mostrarResultadoQuiz() {
+            document.getElementById('q-perguntas').style.display = 'none';
+            document.getElementById('q-resultado').style.display = 'block';
+
+            const total = quizRespostas.reduce((s, r) => s + r.pts, 0);
+            const max = PERGUNTAS.length * 3;
+            const pct = Math.round(total / max * 100);
+
+            let nivel, titulo, cor, fundo, emoji, descPersonal, selos;
+            if (pct >= 83) {
+                nivel = 'Nível Máximo'; titulo = 'Guardião do Planeta'; cor = '#fff';
+                fundo = 'linear-gradient(135deg,#1B4332,#2D6A4F)'; emoji = '🌍';
+                descPersonal = `${primeiroNome()}, você é excepcional! Seus hábitos colocam você entre as pessoas que realmente fazem a diferença no planeta. Continue sendo esse exemplo e inspire quem está ao seu redor.`;
+                selos = ['🏆 Top 5% da plataforma', '🌱 Impacto real no planeta', '💚 Referência sustentável'];
+            } else if (pct >= 67) {
+                nivel = 'Nível Avançado'; titulo = 'Eco Consciente'; cor = '#fff';
+                fundo = 'linear-gradient(135deg,#40916C,#52B788)'; emoji = '🌿';
+                descPersonal = `${primeiroNome()}, você já tem ótimos hábitos! Com alguns ajustes pontuais, você chega ao nível máximo. Você está bem à frente da média das pessoas.`;
+                selos = ['✅ Acima da média', '♻️ Bons hábitos gerais', '📈 Quase no topo'];
+            } else if (pct >= 50) {
+                nivel = 'Nível Intermediário'; titulo = 'Em Evolução'; cor = '#412402';
+                fundo = 'linear-gradient(135deg,#FAC775,#EF9F27)'; emoji = '🌱';
+                descPersonal = `${primeiroNome()}, você está no caminho certo! Já tem consciência ambiental, mas alguns hábitos ainda podem melhorar bastante. Pequenas mudanças trarão grandes resultados.`;
+                selos = ['🌿 Consciência crescente', '🔄 Progresso visível', '💡 Alto potencial'];
+            } else if (pct >= 33) {
+                nivel = 'Nível Iniciante'; titulo = 'Aprendiz Sustentável'; cor = '#4A1B0C';
+                fundo = 'linear-gradient(135deg,#F0997B,#D85A30)'; emoji = '💡';
+                descPersonal = `${primeiroNome()}, você deu o primeiro passo ao fazer este quiz — isso já mostra que se importa! Com pequenas mudanças diárias, você verá uma enorme evolução.`;
+                selos = ['🚀 Começando a jornada', '📚 Muito a aprender', '❤️ Boa intenção'];
+            } else {
+                nivel = 'Ponto de Partida'; titulo = 'Hora de Mudar'; cor = '#501313';
+                fundo = 'linear-gradient(135deg,#F09595,#E24B4A)'; emoji = '🔴';
+                descPersonal = `${primeiroNome()}, não desanime! O conhecimento é o primeiro passo, e você acabou de dar. Nossa área educacional tem tudo que você precisa para transformar seus hábitos.`;
+                selos = ['📖 Conhecimento = poder', '🌱 Toda mudança começa aqui', '🤝 A EcoTech te apoia'];
+            }
+
+            const dicas = [];
+            quizRespostas.forEach((r, i) => {
+                if (r.pts <= 1) {
+                    const d = [
+                        { t: "Reciclagem", tx: "Comece simples: separe papel e plástico em lixeiras diferentes. Você verá o hábito crescer naturalmente.", i: "♻️" },
+                        { t: "Água", tx: "Use um timer no celular para limitar o banho a 5 minutos. São 1.825 litros economizados por ano!", i: "🚿" },
+                        { t: "Energia", tx: "Cole adesivos nos interruptores como lembrete. Retire aparelhos da tomada ao dormir — o stand-by consome até 12% da conta.", i: "💡" },
+                        { t: "Consumo", tx: "Deixe uma ecobag permanentemente na bolsa ou mochila. Em 1 ano, isso elimina centenas de sacolas plásticas.", i: "🛍️" },
+                        { t: "Mobilidade", tx: "Experimente trocar uma viagem de carro por semana pela caminhada ou bicicleta. Saúde e planeta agradecem.", i: "🚲" },
+                        { t: "E-lixo", tx: "Guarde eletrônicos velhos numa caixa e leve a um ponto de coleta. Muitas lojas de eletrônicos recebem gratuitamente.", i: "📱" },
+                    ];
+                    dicas.push(d[i]);
+                }
+            });
+
+            const bw = (pts, mx) => Math.round(pts / mx * 100);
+            const labelPts = pts => pts === 3 ? 'Ótimo' : pts === 2 ? 'Bom' : pts === 1 ? 'Regular' : 'Melhorar';
+            const corPts = pts => pts === 3 ? '#52B788' : pts === 2 ? '#40916C' : pts === 1 ? '#EF9F27' : '#E24B4A';
+
+            document.getElementById('q-resultado').innerHTML = `
+    <div style="background:${fundo};color:${cor};border-radius:18px;padding:2.2rem 1.75rem;text-align:center;margin-bottom:1.25rem">
+      <div style="font-size:3rem;margin-bottom:.5rem">${emoji}</div>
+      <div style="font-size:.88rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;opacity:.82;margin-bottom:.4rem">${nivel}</div>
+      <div style="font-size:2rem;font-weight:900;line-height:1.2;margin-bottom:.4rem">${titulo}</div>
+      <div style="font-size:3.2rem;font-weight:900;line-height:1;margin:.5rem 0">${total}/${max}</div>
+      <div class="score-bar"><div class="score-fill" id="sfill" style="width:0%"></div></div>
+      <div style="font-size:.97rem;line-height:1.65;opacity:.92;max-width:480px;margin:.75rem auto 0">${descPersonal}</div>
+      <div style="margin-top:1.25rem;display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
+        ${selos.map(s => `<span style="background:rgba(255,255,255,.2);color:${cor};border-radius:20px;padding:5px 14px;font-size:.8rem;font-weight:700">${s}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="parabeniza">
+      <div class="parabeniza-avatar">${primeiroNome().charAt(0).toUpperCase()}</div>
+      <div>
+        <div style="font-weight:900;color:var(--verde-escuro);font-size:1rem">Olá, ${primeiroNome()}! 👋</div>
+        <div style="color:var(--texto-sec);font-size:.88rem;margin-top:3px">Você alcançou <strong style="color:var(--verde-escuro)">${total} de ${max} pontos possíveis</strong> — isso equivale a <strong style="color:var(--verde-escuro)">${pct}% de sustentabilidade</strong> no seu perfil atual.</div>
+      </div>
+    </div>
+
+    <div class="breakdown">
+      <h4>📊 Desempenho por área</h4>
+      ${quizRespostas.map((r, i) => `
+        <div class="bitem">
+          <div class="bitem-icone">${r.icone}</div>
+          <div class="bitem-label">${r.cat}</div>
+          <div class="bitem-bar"><div class="bitem-fill bfill" style="width:0%;background:${corPts(r.pts)}" data-w="${bw(r.pts, 3)}"></div></div>
+          <div class="bitem-pts" style="color:${corPts(r.pts)}">${labelPts(r.pts)}</div>
+        </div>`).join('')}
+    </div>
+
+    ${dicas.length > 0 ? `
+    <div style="background:#fff;border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;border:1px solid var(--cinza-medio)">
+      <h4 style="font-weight:800;color:var(--verde-escuro);margin-bottom:1rem;font-size:.95rem">💡 Plano de ação para você, ${primeiroNome()}</h4>
+      ${dicas.map(d => `<div class="dica-item"><div class="dica-icone">${d.i}</div><div class="dica-texto"><strong>${d.t}:</strong> ${d.tx}</div></div>`).join('')}
+    </div>` : `
+    <div style="background:var(--verde-palido);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;border:1px solid var(--verde-suave);text-align:center">
+      <div style="font-size:2rem;margin-bottom:.5rem">🏆</div>
+      <div style="font-weight:800;color:var(--verde-escuro);font-size:1rem">Incrível, ${primeiroNome()}!</div>
+      <div style="color:var(--verde-medio);font-size:.9rem;margin-top:4px">Você não tem pontos fracos evidentes. Continue sendo este exemplo para todos!</div>
+    </div>`}
+
+    <div style="background:#fff;border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;border:1px solid var(--cinza-medio)">
+      <h4 style="font-weight:800;color:var(--verde-escuro);margin-bottom:.75rem;font-size:.95rem">🎯 Próximos passos recomendados</h4>
+      ${pct < 83 ? `<div class="prox-passo">📚 Explore a Área Educacional e aprofunde seu conhecimento ambiental</div>` : ''}
+      ${pct < 67 ? `<div class="prox-passo">🧮 Use a Calculadora Sustentável para medir seu impacto real no planeta</div>` : ''}
+      <div class="prox-passo">🌿 Compartilhe seus resultados e desafie um amigo ou familiar</div>
+      <div class="prox-passo">🔄 Refaça o quiz em 30 dias para acompanhar sua evolução</div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-verde" onclick="reiniciarQuiz()">🔄 Fazer Novamente</button>
+      <button class="btn btn-outline" onclick="trocarNome()">👤 Trocar Nome</button>
+    </div>`;
+
+            adicionarConquista('quiz');
+            if (total >= 15) adicionarConquista('sustent');
+
+            setTimeout(() => {
+                const sf = document.getElementById('sfill');
+                if (sf) sf.style.width = pct + '%';
+                document.querySelectorAll('.bfill').forEach(el => { el.style.width = el.dataset.w + '%'; });
+            }, 120);
+        }
+
+        function reiniciarQuiz() {
+            quizAtual = 0; quizRespostas = [];
+            document.getElementById('q-perguntas').style.display = 'block';
+            document.getElementById('q-resultado').style.display = 'none';
+            renderPergunta();
+        }
+
+        function trocarNome() {
+            document.getElementById('campo-nome').value = '';
+            document.getElementById('btn-comecar').disabled = true;
+            document.getElementById('q-nome').style.display = 'block';
+            document.getElementById('q-perguntas').style.display = 'none';
+            document.getElementById('q-resultado').style.display = 'none';
+        }
+
+        // ===================== CALCULADORA =====================
+        function atualizarRange(input, key, sufixo) {
+            estado.calcVals[key] = +input.value;
+            document.getElementById('v-' + key).textContent = input.value + sufixo;
+        }
+
+        function calcularImpacto() {
+            const { banho, rec, en, pl } = estado.calcVals;
+            const aguaExtra = Math.max(0, (banho - 5) * 12 * 30);
+            const enExtra = Math.max(0, en - 100);
+            const plAno = pl * 52;
+            const score = Math.round(
+                ((Math.max(0, 15 - banho) / 15) * 25) + (rec / 100 * 25) +
+                ((Math.max(0, 200 - en) / 200) * 25) + (Math.max(0, 10 - pl) / 10 * 25)
+            );
+            const scoreCor = score >= 70 ? '#52B788' : score >= 40 ? '#EF9F27' : '#E24B4A';
+            const scoreLabel = score >= 70 ? 'Ótimo — continue assim!' : score >= 40 ? 'Moderado — pode melhorar' : 'Atenção — mudanças necessárias';
+
+            const recs = [];
+            if (banho > 5) recs.push(`🚿 Reduzir o banho de ${banho} para 5 min economizaria ${aguaExtra.toLocaleString('pt-BR')} litros por mês.`);
+            if (rec < 50) recs.push("♻️ Aumente a reciclagem. Comece separando papel e plástico — são os mais fáceis.");
+            if (en > 100) recs.push(`⚡ Seu consumo (${en} kWh) está acima da média. Desligue aparelhos em stand-by antes de dormir.`);
+            if (pl > 3) recs.push(`🛍️ ${pl} plásticos/semana = ${plAno} itens/ano. Prefira sacolas reutilizáveis e garrafinhas.`);
+            if (!recs.length) recs.push("🌟 Parabéns! Você está com um ótimo perfil sustentável. Continue assim!");
+
+            document.getElementById('calc-resultado').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:.9rem">
+      <div class="card" style="padding:1.5rem;text-align:center;border-top:4px solid ${scoreCor}">
+        <div style="font-size:2.5rem;font-weight:900;color:${scoreCor};line-height:1">${score}/100</div>
+        <div style="font-weight:700;color:var(--texto-sec);font-size:.88rem;margin:.25rem 0">Índice de Sustentabilidade</div>
+        <div style="font-size:.82rem;color:${scoreCor};font-weight:700">${scoreLabel}</div>
+        <div class="prog-bar" style="margin-top:.75rem"><div class="prog-fill" id="calc-bar" style="width:0%;background:${scoreCor}"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div class="metric-mini"><div class="metric-mini-icone">💧</div><div class="metric-mini-val" style="color:#4895EF">${aguaExtra.toLocaleString('pt-BR')}</div><div class="metric-mini-label">Litros/mês acima do ideal</div></div>
+        <div class="metric-mini"><div class="metric-mini-icone">♻️</div><div class="metric-mini-val" style="color:var(--verde-claro)">${rec}%</div><div class="metric-mini-label">Lixo reciclado</div></div>
+        <div class="metric-mini"><div class="metric-mini-icone">⚡</div><div class="metric-mini-val" style="color:#F4A261">${enExtra}</div><div class="metric-mini-label">kWh/mês acima da média</div></div>
+        <div class="metric-mini"><div class="metric-mini-icone">🛍️</div><div class="metric-mini-val" style="color:#9B5DE5">${plAno}</div><div class="metric-mini-label">Plásticos descartáveis/ano</div></div>
+      </div>
+      <div class="card" style="padding:1.25rem">
+        <h4 style="font-weight:800;color:var(--verde-escuro);margin-bottom:.75rem;font-size:.95rem">💡 Recomendações personalizadas</h4>
+        ${recs.map(r => `<div style="background:var(--verde-palido);border-radius:8px;padding:10px 14px;font-size:.88rem;color:var(--verde-escuro);font-weight:600;margin-bottom:.5rem">${r}</div>`).join('')}
+      </div>
+    </div>`;
+
+            adicionarConquista('calc');
+            setTimeout(() => { const b = document.getElementById('calc-bar'); if (b) b.style.width = score + '%'; }, 100);
+        }
+
+        // ===================== EDUCAÇÃO =====================
+        function renderEdu() {
+            const n = estado.leituras.length;
+            document.getElementById('edu-info').innerHTML = `<span style="font-size:1.4rem">📖</span><div><span style="font-weight:700;color:var(--verde)">Você leu ${n} de ${CONTEUDOS.length} tópicos.</span> <span style="color:var(--verde-medio);font-size:.88rem">${n >= 3 ? '🏅 Conquista "Aprendiz Eco" desbloqueada!' : `Leia mais ${3 - Math.min(n, 3)} tópico${3 - n !== 1 ? 's' : ''} para ganhar a conquista!`}</span></div>`;
+
+            const lista = document.getElementById('edu-lista');
+            lista.innerHTML = '';
+            CONTEUDOS.forEach((c, idx) => {
+                const lido = estado.leituras.includes(c.t);
+                const div = document.createElement('div');
+                div.className = 'edu-item';
+                div.style.borderLeft = `4px solid ${c.c}`;
+                div.style.borderRadius = '0 14px 14px 0';
+                div.innerHTML = `
+      <div class="edu-header" onclick="toggleEdu(${idx},this)">
+        <div style="font-size:1.7rem">${c.i}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <h3 style="font-weight:800;color:var(--verde-escuro);margin:0;font-size:.98rem">${c.t}</h3>
+            <span id="edu-badge-${idx}" style="background:var(--verde-palido);color:var(--verde-escuro);border-radius:20px;padding:2px 9px;font-size:.72rem;font-weight:700;display:${lido ? 'inline-flex' : 'none'};align-items:center;gap:4px">✓ Lido</span>
+          </div>
+          <span style="background:${c.c}22;color:${c.c};border-radius:20px;padding:2px 9px;font-size:.75rem;font-weight:700">${c.tag}</span>
+        </div>
+        <div class="edu-arrow">▾</div>
+      </div>
+      <div class="edu-conteudo" id="edu-c-${idx}">
+        <p style="color:var(--texto-sec);line-height:1.7;margin-bottom:.9rem;font-size:.93rem">${c.txt}</p>
+        <div class="edu-dica" style="background:${c.c}18;border-left:3px solid ${c.c};margin-bottom:1rem">
+          <strong style="color:${c.c};font-size:.87rem">💡 Dica rápida: </strong>
+          <span style="color:var(--texto-sec);font-size:.87rem">${c.dica}</span>
+        </div>
+        <div id="edu-btn-${idx}">
+          ${lido
+                        ? `<div style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--verde-palido);border-radius:50px;border:1px solid var(--verde-suave)"><span>✅</span><span style="font-weight:700;color:var(--verde-escuro);font-size:.88rem">Tópico marcado como lido!</span></div>`
+                        : `<button onclick="marcarLido(${idx})" style="display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--verde-escuro);color:#fff;border:none;border-radius:50px;font-size:.9rem;font-weight:800;cursor:pointer;font-family:inherit" onmouseover="this.style.background='var(--verde-medio)'" onmouseout="this.style.background='var(--verde-escuro)'">✅ Marcar como lido</button>`
+                    }
+        </div>
+      </div>`;
+                lista.appendChild(div);
+            });
+        }
+
+        function toggleEdu(idx, headerEl) {
+            const conteudo = document.getElementById('edu-c-' + idx);
+            const arrow = headerEl.querySelector('.edu-arrow');
+            const isOpen = conteudo.classList.contains('open');
+            conteudo.classList.toggle('open');
+            arrow.style.transform = isOpen ? 'none' : 'rotate(180deg)';
+        }
+
+        function marcarLido(idx) {
+            const titulo = CONTEUDOS[idx].t;
+            if (estado.leituras.includes(titulo)) return;
+            estado.leituras.push(titulo);
+            if (estado.leituras.length >= 3) adicionarConquista('aprend');
+            // Atualiza apenas o badge no header e o botão, sem recriar a lista
+            const headerBadge = document.getElementById('edu-badge-' + idx);
+            if (headerBadge) headerBadge.style.display = 'inline-flex';
+            const btnArea = document.getElementById('edu-btn-' + idx);
+            if (btnArea) btnArea.innerHTML = `<div style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--verde-palido);border-radius:50px;border:1px solid var(--verde-suave)"><span>✅</span><span style="font-weight:700;color:var(--verde-escuro);font-size:.88rem">Tópico marcado como lido!</span></div>`;
+            // Atualiza contador do topo
+            const n = estado.leituras.length;
+            document.getElementById('edu-info').innerHTML = `<span style="font-size:1.4rem">📖</span><div><span style="font-weight:700;color:var(--verde)">Você leu ${n} de ${CONTEUDOS.length} tópicos.</span> <span style="color:var(--verde-medio);font-size:.88rem">${n >= 3 ? '🏅 Conquista "Aprendiz Eco" desbloqueada!' : `Leia mais ${3 - Math.min(n, 3)} tópico${3 - n !== 1 ? 's' : ''} para ganhar a conquista!`}</span></div>`;
+        }
+
+        // ===================== PERFIL =====================
+        function atualizarPerfil() {
+            document.getElementById('p-conquistas').textContent = estado.conquistas.length;
+            document.getElementById('p-leituras').textContent = estado.leituras.length;
+            document.getElementById('p-pontos').textContent = estado.conquistas.length * 10 + estado.leituras.length * 5;
+
+            document.getElementById('badges-lista').innerHTML = BADGES.map(b => {
+                const desbloq = estado.conquistas.includes(b.id);
+                return `<div class="badge-perfil ${desbloq ? 'desbloqueado' : ''}">
+      <div style="font-size:1.4rem;filter:${desbloq ? 'none' : 'grayscale(1)'}">${b.i}</div>
+      <div>
+        <div style="font-weight:700;color:${desbloq ? 'var(--verde-escuro)' : 'var(--cinza)'};font-size:.88rem">${b.n}</div>
+        <div style="font-size:.75rem;color:var(--cinza)">${desbloq ? '✅ ' + b.d : '🔒 Bloqueado'}</div>
+      </div>
+    </div>`;
+            }).join('');
+
+            const meuPts = estado.conquistas.length * 4 + estado.leituras.length;
+            const ranking = [
+                { n: 'Maria S.', pts: 18, av: 'MS' }, { n: 'João P.', pts: 15, av: 'JP' },
+                { n: estado.nomeQuiz || 'Você', pts: meuPts, av: (estado.nomeQuiz || 'V').charAt(0).toUpperCase(), eu: true },
+                { n: 'Ana L.', pts: 10, av: 'AL' }, { n: 'Carlos R.', pts: 8, av: 'CR' }
+            ].sort((a, b) => b.pts - a.pts);
+            const med = ['🥇', '🥈', '🥉'];
+            document.getElementById('ranking-lista').innerHTML = ranking.map((r, i) => `
+    <div class="rank-item ${r.eu ? 'destaque' : ''}">
+      <div style="font-weight:900;font-size:1rem;min-width:24px;color:${i === 0 ? '#F4A261' : i === 1 ? '#888' : i === 2 ? '#CD7F32' : 'var(--cinza)'}">${i < 3 ? med[i] : `#${i + 1}`}</div>
+      <div class="avatar-sm ${r.eu ? 'eu' : ''}">${r.av}</div>
+      <div style="flex:1;font-weight:${r.eu ? 800 : 600};color:${r.eu ? 'var(--verde-escuro)' : 'var(--texto)'};font-size:.92rem">${r.n}${r.eu ? ' 👈' : ''}</div>
+      <div style="font-weight:800;color:var(--verde-claro)">${r.pts} pts</div>
+    </div>`).join('');
+        }
+
+        // ===================== CONQUISTAS =====================
+        function adicionarConquista(id) {
+            if (!estado.conquistas.includes(id)) {
+                estado.conquistas.push(id);
+                const b = BADGES.find(x => x.id === id);
+                if (b) mostrarNotif(b);
+                atualizarBadgeCnt();
+            }
+        }
+
+        function mostrarNotif(b) {
+            const el = document.getElementById('notif');
+            document.getElementById('notif-icone').textContent = b.i;
+            document.getElementById('notif-nome').textContent = b.n;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3500);
+        }
+
+        function atualizarBadgeCnt() {
+            const n = estado.conquistas.length;
+            const el = document.getElementById('badge-cnt');
+            el.textContent = n;
+            el.style.display = n > 0 ? 'inline-flex' : 'none';
+        }
+
+        // ===================== INIT =====================
+        renderEdu();
+    </script>
+</body>
+
+</html>
