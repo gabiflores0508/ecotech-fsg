@@ -1601,10 +1601,11 @@
 
         function carregarRanking(callback) {
             if (!firebaseAtivo) { callback(null); return; }
-            db.ref('ranking').orderByChild('pontos').limitToLast(20).once('value', snap => {
+            db.ref('ranking').once('value').then(snap => {
                 const dados = [];
                 snap.forEach(child => dados.push(child.val()));
-                callback(dados.reverse());
+                dados.sort((a, b) => b.pontos - a.pontos);
+                callback(dados.length > 0 ? dados.slice(0, 20) : null);
             }).catch(() => callback(null));
         }
 
