@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoTech — Plataforma de Conscientização Climática</title>
+    <title>EcoTech - Plataforma de Conscientização Climática</title>
     <link rel="icon" type="image/x-icon" href="favicon_io/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
@@ -525,13 +525,17 @@
             font-family: inherit;
             display: flex;
             align-items: center;
-            gap: 10px
+            gap: 10px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent
         }
 
-        .opcao:hover {
-            border-color: var(--verde-claro);
-            background: var(--verde-palido);
-            color: var(--verde-escuro)
+        @media (hover: hover) {
+            .opcao:hover {
+                border-color: var(--verde-claro);
+                background: var(--verde-palido);
+                color: var(--verde-escuro)
+            }
         }
 
         .letra {
@@ -549,9 +553,11 @@
             transition: all .15s
         }
 
-        .opcao:hover .letra {
-            background: var(--verde-claro);
-            color: #fff
+        @media (hover: hover) {
+            .opcao:hover .letra {
+                background: var(--verde-claro);
+                color: #fff
+            }
         }
 
         /* RESULTADO QUIZ */
@@ -1014,7 +1020,7 @@
         }
 
         .hamburger:hover {
-            background: rgba(255,255,255,.12)
+            background: rgba(255, 255, 255, .12)
         }
 
         .hamburger span {
@@ -1046,11 +1052,11 @@
             right: 0;
             background: var(--verde-escuro);
             padding: .6rem 1rem 1rem;
-            box-shadow: 0 8px 24px rgba(27,67,50,.4);
+            box-shadow: 0 8px 24px rgba(27, 67, 50, .4);
             z-index: 198;
             flex-direction: column;
             gap: 4px;
-            border-top: 1px solid rgba(255,255,255,.1)
+            border-top: 1px solid rgba(255, 255, 255, .1)
         }
 
         .nav-mobile.aberto {
@@ -1144,13 +1150,13 @@
                 <div style="font-size:3.5rem;margin-bottom:.75rem">🌿</div>
                 <h1>Cuide do planeta.<br>Comece pela sua casa.</h1>
                 <p>A EcoTech é uma plataforma educativa gratuita que ajuda você e sua família a adotarem hábitos mais
-                    sustentáveis no dia a dia — de forma simples, prática e eficaz.</p>
+                    sustentáveis no dia a dia de forma simples, prática e eficaz.</p>
                 <div>
                     <button class="btn-hero" onclick="navegar('quiz')">🎯 Fazer o Quiz Ambiental</button>
                     <button class="btn-hero btn-hero-outline" onclick="navegar('educar')">📚 Aprender Agora</button>
                 </div>
                 <div class="hero-tags">
-                    <span class="hero-tag">✓ ODS 13 — Ação Climática</span>
+                    <span class="hero-tag">✓ ODS 13 - Ação Contra a Mudança Global do Clima</span>
                     <span class="hero-tag">✓ Projeto Extensionista</span>
                     <span class="hero-tag">✓ Gratuito e Aberto</span>
                 </div>
@@ -1502,7 +1508,7 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">© 2025 EcoTech — Projeto de Extensão Universitária · Dados simulados para fins
+        <div class="footer-bottom">© 2025 EcoTech - Projeto de Extensão Universitária · Dados simulados para fins
             educacionais.</div>
     </footer>
 
@@ -1512,9 +1518,9 @@
             "🌱 Cada pequena ação conta para um futuro mais verde.",
             "💧 Água é vida. Cuide dela como se fosse sua.",
             "♻️ Reciclar é um ato de amor ao planeta.",
-            "🌍 A Terra não é herança dos nossos pais — é empréstimo dos nossos filhos.",
+            "🌍 A Terra não é herança dos nossos pais, é empréstimo dos nossos filhos.",
             "⚡ Economizar energia hoje é garantir luz para o amanhã.",
-            "🌿 Sustentabilidade não é um destino — é uma jornada diária.",
+            "🌿 Sustentabilidade não é um destino, é uma jornada diária.",
         ];
 
         const PERGUNTAS = [
@@ -1528,7 +1534,7 @@
 
         const CONTEUDOS = [
             { t: "Como reciclar corretamente", i: "♻️", c: "#52B788", tag: "Reciclagem", txt: "Separar o lixo corretamente é o primeiro passo para um Brasil mais limpo. Lixo seco (papel, plástico, metal, vidro) vai para a coleta seletiva. Lixo orgânico pode virar adubo. Lixo eletrônico tem pontos de coleta específicos em lojas e shoppings. Uma simples divisão de lixeiras em casa já faz enorme diferença!", dica: "Coloque 3 lixeiras na cozinha: seco, orgânico e rejeito." },
-            { t: "Economia de água no dia a dia", i: "💧", c: "#4895EF", tag: "Água", txt: "Fechar a torneira ao escovar os dentes economiza até 12 litros por minuto. Banhos curtos (máx. 5 min) poupam centenas de litros por mês. Reaproveitar água da chuva para jardim e limpeza é simples e muito eficaz. Verifique vazamentos com frequência — um pingando pode desperdiçar até 46 litros por dia.", dica: "Um banho 5 min mais curto por dia = 1.825 litros economizados por ano." },
+            { t: "Economia de água no dia a dia", i: "💧", c: "#4895EF", tag: "Água", txt: "Fechar a torneira ao escovar os dentes economiza até 12 litros por minuto. Banhos curtos (máx. 5 min) poupam centenas de litros por mês. Reaproveitar água da chuva para jardim e limpeza é simples e muito eficaz. Verifique vazamentos com frequência, um pingando pode desperdiçar até 46 litros por dia.", dica: "Um banho 5 min mais curto por dia = 1.825 litros economizados por ano." },
             { t: "Reduzindo o consumo de energia", i: "⚡", c: "#F4A261", tag: "Energia", txt: "Desligar aparelhos da tomada (stand-by consome até 12% da sua conta!), usar lâmpadas LED, aproveitar a luz natural e preferir eletrodomésticos com selo Procel são hábitos que reduzem sua conta e o impacto ambiental. Lavar roupas com água fria e aproveitar o sol para secar também ajudam muito.", dica: "Lâmpadas LED gastam 80% menos energia que as incandescentes comuns." },
             { t: "Descarte correto de eletrônicos", i: "📱", c: "#9B5DE5", tag: "E-lixo", txt: "Celulares, pilhas, baterias e eletrônicos contêm metais pesados como chumbo e mercúrio que contaminam solo e água por décadas. Leve-os sempre a pontos de coleta em lojas, shoppings ou postos da prefeitura. Nunca jogue no lixo comum. Muitas marcas oferecem programas de coleta gratuitos.", dica: "1 pilha pequena pode contaminar até 1 m² de solo por 50 anos." },
             { t: "Consumo consciente", i: "🛒", c: "#2D6A4F", tag: "Consumo", txt: "Antes de comprar, pergunte-se: realmente preciso disso? Posso alugar, emprestar ou comprar usado? Prefira produtos locais, com menos embalagem e maior durabilidade. O consumo consciente reduz lixo, poupa dinheiro e protege o planeta. A moda sustentável e a economia circular são tendências que já chegaram ao Brasil.", dica: "Comprar menos e melhor é a forma mais eficaz de sustentabilidade." },
@@ -1625,10 +1631,13 @@
             q.ops.forEach((op, i) => {
                 const btn = document.createElement('button');
                 btn.className = 'opcao';
+                btn.setAttribute('touch-action', 'manipulation');
                 btn.innerHTML = `<span class="letra">${'ABCD'[i]}</span>${op}`;
                 btn.onclick = () => responderQuiz(q.pts[i], i);
                 el.appendChild(btn);
             });
+            // Sobe para o topo da seção de perguntas
+            document.getElementById('q-perguntas').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function responderQuiz(pts, idxOpcao) {
@@ -1675,7 +1684,7 @@
             } else if (pct >= 33) {
                 nivel = 'Nível Iniciante'; titulo = 'Aprendiz Sustentável'; cor = '#4A1B0C';
                 fundo = 'linear-gradient(135deg,#F0997B,#D85A30)'; emoji = '💡';
-                descPersonal = `${primeiroNome()}, você deu o primeiro passo ao fazer este quiz — isso já mostra que se importa! Com pequenas mudanças diárias, você verá uma enorme evolução.`;
+                descPersonal = `${primeiroNome()}, você deu o primeiro passo ao fazer este quiz, isso já mostra que se importa! Com pequenas mudanças diárias, você verá uma enorme evolução.`;
                 selos = ['🚀 Começando a jornada', '📚 Muito a aprender', '❤️ Boa intenção'];
             } else {
                 nivel = 'Ponto de Partida'; titulo = 'Hora de Mudar'; cor = '#501313';
@@ -1690,7 +1699,7 @@
                     const d = [
                         { t: "Reciclagem", tx: "Comece simples: separe papel e plástico em lixeiras diferentes. Você verá o hábito crescer naturalmente.", i: "♻️" },
                         { t: "Água", tx: "Use um timer no celular para limitar o banho a 5 minutos. São 1.825 litros economizados por ano!", i: "🚿" },
-                        { t: "Energia", tx: "Cole adesivos nos interruptores como lembrete. Retire aparelhos da tomada ao dormir — o stand-by consome até 12% da conta.", i: "💡" },
+                        { t: "Energia", tx: "Cole adesivos nos interruptores como lembrete. Retire aparelhos da tomada ao dormir, o stand-by consome até 12% da conta.", i: "💡" },
                         { t: "Consumo", tx: "Deixe uma ecobag permanentemente na bolsa ou mochila. Em 1 ano, isso elimina centenas de sacolas plásticas.", i: "🛍️" },
                         { t: "Mobilidade", tx: "Experimente trocar uma viagem de carro por semana pela caminhada ou bicicleta. Saúde e planeta agradecem.", i: "🚲" },
                         { t: "E-lixo", tx: "Guarde eletrônicos velhos numa caixa e leve a um ponto de coleta. Muitas lojas de eletrônicos recebem gratuitamente.", i: "📱" },
@@ -1720,7 +1729,7 @@
       <div class="parabeniza-avatar">${primeiroNome().charAt(0).toUpperCase()}</div>
       <div>
         <div style="font-weight:900;color:var(--verde-escuro);font-size:1rem">Olá, ${primeiroNome()}! 👋</div>
-        <div style="color:var(--texto-sec);font-size:.88rem;margin-top:3px">Você alcançou <strong style="color:var(--verde-escuro)">${total} de ${max} pontos possíveis</strong> — isso equivale a <strong style="color:var(--verde-escuro)">${pct}% de sustentabilidade</strong> no seu perfil atual.</div>
+        <div style="color:var(--texto-sec);font-size:.88rem;margin-top:3px">Você alcançou <strong style="color:var(--verde-escuro)">${total} de ${max} pontos possíveis</strong> - isso equivale a <strong style="color:var(--verde-escuro)">${pct}% de sustentabilidade</strong> no seu perfil atual.</div>
       </div>
     </div>
 
@@ -1800,11 +1809,11 @@
                 ((Math.max(0, 200 - en) / 200) * 25) + (Math.max(0, 10 - pl) / 10 * 25)
             );
             const scoreCor = score >= 70 ? '#52B788' : score >= 40 ? '#EF9F27' : '#E24B4A';
-            const scoreLabel = score >= 70 ? 'Ótimo — continue assim!' : score >= 40 ? 'Moderado — pode melhorar' : 'Atenção — mudanças necessárias';
+            const scoreLabel = score >= 70 ? 'Ótimo - continue assim!' : score >= 40 ? 'Moderado - pode melhorar' : 'Atenção: mudanças necessárias';
 
             const recs = [];
             if (banho > 5) recs.push(`🚿 Reduzir o banho de ${banho} para 5 min economizaria ${aguaExtra.toLocaleString('pt-BR')} litros por mês.`);
-            if (rec < 50) recs.push("♻️ Aumente a reciclagem. Comece separando papel e plástico — são os mais fáceis.");
+            if (rec < 50) recs.push("♻️ Aumente a reciclagem. Comece separando papel e plástico, são os mais fáceis.");
             if (en > 100) recs.push(`⚡ Seu consumo (${en} kWh) está acima da média. Desligue aparelhos em stand-by antes de dormir.`);
             if (pl > 3) recs.push(`🛍️ ${pl} plásticos/semana = ${plAno} itens/ano. Prefira sacolas reutilizáveis e garrafinhas.`);
             if (!recs.length) recs.push("🌟 Parabéns! Você está com um ótimo perfil sustentável. Continue assim!");
