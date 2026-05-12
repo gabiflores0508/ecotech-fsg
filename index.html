@@ -1602,11 +1602,12 @@
         function carregarRanking(callback) {
             if (!firebaseAtivo) { console.warn('Firebase não ativo'); callback(null); return; }
             db.ref('ranking').once('value').then(snap => {
-                const dados = [];
-                snap.forEach(child => dados.push(child.val()));
+                const val = snap.val();
+                if (!val) { callback(null); return; }
+                const dados = Object.values(val);
                 dados.sort((a, b) => b.pontos - a.pontos);
                 console.log('Ranking carregado:', dados);
-                callback(dados.length > 0 ? dados.slice(0, 20) : null);
+                callback(dados.slice(0, 20));
             }).catch(err => { console.error('Erro ao carregar ranking:', err); callback(null); });
         }
 
