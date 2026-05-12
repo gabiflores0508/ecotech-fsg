@@ -1600,13 +1600,14 @@
         }
 
         function carregarRanking(callback) {
-            if (!firebaseAtivo) { callback(null); return; }
+            if (!firebaseAtivo) { console.warn('Firebase não ativo'); callback(null); return; }
             db.ref('ranking').once('value').then(snap => {
                 const dados = [];
                 snap.forEach(child => dados.push(child.val()));
                 dados.sort((a, b) => b.pontos - a.pontos);
+                console.log('Ranking carregado:', dados);
                 callback(dados.length > 0 ? dados.slice(0, 20) : null);
-            }).catch(() => callback(null));
+            }).catch(err => { console.error('Erro ao carregar ranking:', err); callback(null); });
         }
 
         // ===================== MENU MOBILE =====================
